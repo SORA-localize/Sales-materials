@@ -34,7 +34,7 @@ const ProductDescription = ({ product }) => {
 
             {/* Description */}
             {selectedTab === "Description" && (
-                <p className="max-w-xl">{product.description}</p>
+                <p className="max-w-xl"><T k={`product_desc_${product.id}`} fallback={product.description} /></p>
             )}
 
             {/* Reviews */}
@@ -62,7 +62,7 @@ const ProductDescription = ({ product }) => {
             <div className="flex gap-3 mt-14">
                 <Image src={product.store.logo} alt="" className="size-11 rounded-full ring ring-slate-400" width={100} height={100} />
                 <div>
-                    <p className="font-medium text-slate-600"><T k="product_by" /> {product.store.name}</p>
+                    <p className="font-medium text-slate-600"><T k="product_by" /> <T k="store_happyshop_name" /></p>
                     <Link href={`/shop/${product.store.username}`} className="flex items-center gap-1.5 text-green-500">
                         <T k="product_view_store" /> <ArrowRight size={14} />
                     </Link>

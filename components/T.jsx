@@ -4,11 +4,13 @@ import { translations } from '@/lib/translations'
 import { useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
-export default function T({ k, vars }) {
+// fallback: plain string to render when the key isn't in translations
+export default function T({ k, vars, fallback }) {
   const { mode } = useLanguage()
   const entry = translations[k]
 
   if (!entry) {
+    if (fallback !== undefined) return <>{fallback}</>
     return <span className="bg-red-100 text-red-600 text-xs px-1 rounded">[{k}]</span>
   }
 

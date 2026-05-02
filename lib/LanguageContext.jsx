@@ -22,11 +22,12 @@ export function useLanguage() {
 }
 
 // For string contexts (placeholder, aria-label, etc.)
+// t('key') → translated string; t('key', fallback) → fallback if key not found
 export function useT() {
   const { mode } = useLanguage()
-  return (key) => {
+  return (key, fallback) => {
     const entry = translations[key]
-    if (!entry) return `[${key}]`
+    if (!entry) return fallback !== undefined ? fallback : `[${key}]`
     return entry[mode] ?? entry.original
   }
 }

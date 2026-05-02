@@ -3,6 +3,7 @@ import { StarIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import T from '@/components/T'
 
 // デモで開放する4商品のみリンク可能にする
 const DEMO_IDS = new Set(['prod_1', 'prod_2', 'prod_3', 'prod_4'])
@@ -26,7 +27,7 @@ const ProductCard = ({ product }) => {
             </div>
             <div className='flex justify-between gap-3 text-sm text-slate-800 pt-2 max-w-60'>
                 <div>
-                    <p>{product.name}</p>
+                    <p><T k={`product_name_${product.id}`} fallback={product.name} /></p>
                     <div className='flex'>
                         {Array(5).fill('').map((_, index) => (
                             <StarIcon key={index} size={14} className='text-transparent mt-0.5' fill={rating >= index + 1 ? "#00C950" : "#D1D5DB"} />

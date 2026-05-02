@@ -39,8 +39,8 @@ export default function StoreShop() {
                         height={200}
                     />
                     <div className="text-center md:text-left">
-                        <h1 className="text-3xl font-semibold text-slate-800">{storeInfo.name}</h1>
-                        <p className="text-sm text-slate-600 mt-2 max-w-lg">{storeInfo.description}</p>
+                        <h1 className="text-3xl font-semibold text-slate-800"><T k="store_happyshop_name" /></h1>
+                        <p className="text-sm text-slate-600 mt-2 max-w-lg"><T k="store_happyshop_desc" /></p>
                         <div className="space-y-2 text-sm text-slate-500 mt-4">
                             <div className="flex items-center">
                                 <MapPinIcon className="w-4 h-4 text-gray-500 mr-2" />
