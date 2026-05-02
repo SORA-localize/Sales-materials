@@ -1,16 +1,9 @@
 'use client'
 import { useLanguage } from '@/lib/LanguageContext'
 import { translations } from '@/lib/translations'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 
-/**
- * Translation component.
- * - k: translation key
- * - vars: optional { key: value } for placeholder substitution e.g. {count}
- *
- * In Proofread mode, highlights text that differs from the AI translation
- * and shows a tooltip with the proofreader's note on hover.
- */
 export default function T({ k, vars }) {
   const { mode } = useLanguage()
   const entry = translations[k]
@@ -36,23 +29,39 @@ export default function T({ k, vars }) {
 }
 
 function ProofreadHighlight({ text, note }) {
-  const [open, setOpen] = useState(false)
+  const spanRef = useRef(null)
+  const [tooltipStyle, setTooltipStyle] = useState(null)
+
+  const showTooltip = () => {
+    if (!note || !spanRef.current) return
+    const rect = spanRef.current.getBoundingClientRect()
+    setTooltipStyle({
+      left: rect.left,
+      top: rect.top - 10,
+    })
+  }
 
   return (
-    <span className="relative inline">
+    <>
       <span
+        ref={spanRef}
         className="border-b-2 border-yellow-400 cursor-help"
-        onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
+        onMouseEnter={showTooltip}
+        onMouseLeave={() => setTooltipStyle(null)}
       >
         {text}
       </span>
-      {open && note && (
-        <span className="absolute bottom-full left-0 mb-2 z-[9999] bg-slate-800 text-white text-xs rounded-lg px-3 py-2 shadow-xl whitespace-nowrap pointer-events-none leading-relaxed">
+
+      {tooltipStyle && createPortal(
+        <span
+          className="fixed z-[9999] bg-slate-800 text-white text-xs rounded-lg px-3 py-2 shadow-xl whitespace-nowrap pointer-events-none leading-relaxed"
+          style={{ left: tooltipStyle.left, top: tooltipStyle.top, transform: 'translateY(-100%)' }}
+        >
           ✏️ {note}
           <span className="absolute top-full left-4 border-4 border-transparent border-t-slate-800" />
-        </span>
+        </span>,
+        document.body
       )}
-    </span>
+    </>
   )
 }
