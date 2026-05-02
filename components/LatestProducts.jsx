@@ -3,15 +3,21 @@ import React from 'react'
 import Title from './Title'
 import ProductCard from './ProductCard'
 import { useSelector } from 'react-redux'
+import T from '@/components/T'
 
 const LatestProducts = () => {
 
     const displayQuantity = 4
     const products = useSelector(state => state.product.list)
+    const shown = Math.min(displayQuantity, products.length)
 
     return (
         <div className='px-6 my-30 max-w-6xl mx-auto'>
-            <Title title='Latest Products' description={`Showing ${products.length < displayQuantity ? products.length : displayQuantity} of ${products.length} products`} href='/shop' />
+            <Title
+                title={<T k="section_latest" />}
+                description={<T k="section_showing_n_of_m" vars={{ shown, total: products.length }} />}
+                href='/shop'
+            />
             <div className='mt-12 grid grid-cols-2 sm:flex flex-wrap gap-6 justify-between'>
                 {products.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, displayQuantity).map((product, index) => (
                     <ProductCard key={index} product={product} />

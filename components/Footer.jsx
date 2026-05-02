@@ -1,4 +1,6 @@
+'use client'
 import Link from "next/link";
+import T from "@/components/T";
 
 const Footer = () => {
 
@@ -12,7 +14,7 @@ const Footer = () => {
 
     const linkSections = [
         {
-            title: "PRODUCTS",
+            titleKey: "footer_products_title",
             links: [
                 { text: "Earphones", path: '/', icon: null },
                 { text: "Headphones", path: '/', icon: null },
@@ -21,29 +23,29 @@ const Footer = () => {
             ]
         },
         {
-            title: "WEBSITE?",
+            titleKey: "footer_website_title",
             links: [
-                { text: "Home", path: '/', icon: null },
-                { text: "Privacy Policy", path: '/', icon: null },
-                { text: "Become Plus Member", path: '/pricing', icon: null },
-                { text: "Create Your Store", path: '/create-store', icon: null },
+                { textKey: "nav_home",            path: '/',             icon: null },
+                { textKey: "footer_privacy",      path: '/',             icon: null },
+                { textKey: "footer_become_member", path: '/pricing',     icon: null },
+                { textKey: "footer_create_store", path: '/create-store', icon: null },
             ]
         },
         {
-            title: "CONTACT",
+            titleKey: "footer_contact_title",
             links: [
-                { text: "+1-212-456-7890", path: '/', icon: MailIcon },
-                { text: "contact@example.com", path: '/', icon: PhoneIcon },
-                { text: "794 Francisco, 94102", path: '/', icon: MapPinIcon }
+                { text: "+1-212-456-7890",       path: '/', icon: MailIcon },
+                { text: "contact@example.com",   path: '/', icon: PhoneIcon },
+                { text: "794 Francisco, 94102",  path: '/', icon: MapPinIcon }
             ]
         }
     ];
 
     const socialIcons = [
-        { icon: FacebookIcon, link: "https://www.facebook.com" },
+        { icon: FacebookIcon,  link: "https://www.facebook.com" },
         { icon: InstagramIcon, link: "https://www.instagram.com" },
-        { icon: TwitterIcon, link: "https://twitter.com" },
-        { icon: LinkedinIcon, link: "https://www.linkedin.com" },
+        { icon: TwitterIcon,   link: "https://twitter.com" },
+        { icon: LinkedinIcon,  link: "https://www.linkedin.com" },
     ]
 
     return (
@@ -54,7 +56,7 @@ const Footer = () => {
                         <Link href="/" className="text-4xl font-semibold text-slate-700">
                             <span className="text-green-600">go</span>cart<span className="text-green-600 text-5xl leading-0">.</span>
                         </Link>
-                        <p className="max-w-[410px] mt-6 text-sm">Welcome to gocart, your ultimate destination for the latest and smartest gadgets. From smartphones and smartwatches to essential accessories, we bring you the best in innovation — all in one place.</p>
+                        <p className="max-w-[410px] mt-6 text-sm"><T k="footer_desc" /></p>
                         <div className="flex items-center gap-3 mt-5">
                             {socialIcons.map((item, i) => (
                                 <Link href={item.link} key={i} className="flex items-center justify-center w-10 h-10 bg-slate-100 hover:scale-105 hover:border border-slate-300 transition rounded-full">
@@ -63,15 +65,19 @@ const Footer = () => {
                             ))}
                         </div>
                     </div>
-                    <div className="flex flex-wrap justify-between w-full md:w-[45%] gap-5 text-sm ">
+                    <div className="flex flex-wrap justify-between w-full md:w-[45%] gap-5 text-sm">
                         {linkSections.map((section, index) => (
                             <div key={index}>
-                                <h3 className="font-medium text-slate-700 md:mb-5 mb-3">{section.title}</h3>
+                                <h3 className="font-medium text-slate-700 md:mb-5 mb-3">
+                                    <T k={section.titleKey} />
+                                </h3>
                                 <ul className="space-y-2.5">
                                     {section.links.map((link, i) => (
                                         <li key={i} className="flex items-center gap-2">
                                             {link.icon && <link.icon />}
-                                            <Link href={link.path} className="hover:underline transition">{link.text}</Link>
+                                            <Link href={link.path} className="hover:underline transition">
+                                                {link.textKey ? <T k={link.textKey} /> : link.text}
+                                            </Link>
                                         </li>
                                     ))}
                                 </ul>
@@ -80,7 +86,7 @@ const Footer = () => {
                     </div>
                 </div>
                 <p className="py-4 text-sm text-slate-500">
-                    Copyright 2025 © gocart All Right Reserved.
+                    <T k="footer_copyright" />
                 </p>
             </div>
         </footer>
