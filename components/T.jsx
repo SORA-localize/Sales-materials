@@ -41,7 +41,7 @@ function ProofreadHighlight({ text, note }) {
   return (
     <span className="relative inline">
       <span
-        className="bg-yellow-100 border-b-2 border-yellow-400 rounded-sm px-0.5 cursor-help"
+        className="border-b-2 border-yellow-400 cursor-help"
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
       >
