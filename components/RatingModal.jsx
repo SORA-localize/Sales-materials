@@ -1,23 +1,24 @@
 'use client'
-
 import { Star } from 'lucide-react';
 import React, { useState } from 'react'
 import { XIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
+import T from '@/components/T';
+import { useT } from '@/lib/LanguageContext';
 
 const RatingModal = ({ ratingModal, setRatingModal }) => {
 
+    const t = useT()
     const [rating, setRating] = useState(0);
     const [review, setReview] = useState('');
 
     const handleSubmit = async () => {
         if (rating < 0 || rating > 5) {
-            return toast('Please select a rating');
+            return toast(t('rating_toast_select'));
         }
         if (review.length < 5) {
-            return toast('write a short review');
+            return toast(t('rating_toast_review'));
         }
-
         setRatingModal(null);
     }
 
@@ -27,7 +28,7 @@ const RatingModal = ({ ratingModal, setRatingModal }) => {
                 <button onClick={() => setRatingModal(null)} className='absolute top-3 right-3 text-gray-500 hover:text-gray-700'>
                     <XIcon size={20} />
                 </button>
-                <h2 className='text-xl font-medium text-slate-600 mb-4'>Rate Product</h2>
+                <h2 className='text-xl font-medium text-slate-600 mb-4'><T k="rating_modal_title" /></h2>
                 <div className='flex items-center justify-center mb-4'>
                     {Array.from({ length: 5 }, (_, i) => (
                         <Star
@@ -39,13 +40,16 @@ const RatingModal = ({ ratingModal, setRatingModal }) => {
                 </div>
                 <textarea
                     className='w-full p-2 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-green-400'
-                    placeholder='Write your review (optional)'
+                    placeholder={t('rating_placeholder')}
                     rows='4'
                     value={review}
                     onChange={(e) => setReview(e.target.value)}
-                ></textarea>
-                <button onClick={e => toast.promise(handleSubmit(), { loading: 'Submitting...' })} className='w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition'>
-                    Submit Rating
+                />
+                <button
+                    onClick={() => toast.promise(handleSubmit(), { loading: 'Submitting...' })}
+                    className='w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition'
+                >
+                    <T k="rating_submit" />
                 </button>
             </div>
         </div>

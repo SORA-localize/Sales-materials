@@ -4,6 +4,7 @@ import ProductDetails from "@/components/ProductDetails";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import T from "@/components/T";
 
 export default function Product() {
 
@@ -17,26 +18,21 @@ export default function Product() {
     }
 
     useEffect(() => {
-        if (products.length > 0) {
-            fetchProduct()
-        }
+        if (products.length > 0) fetchProduct()
         scrollTo(0, 0)
-    }, [productId,products]);
+    }, [productId, products]);
 
     return (
         <div className="mx-6">
             <div className="max-w-7xl mx-auto">
 
-                {/* Breadcrums */}
-                <div className="  text-gray-600 text-sm mt-8 mb-5">
-                    Home / Products / {product?.category}
+                {/* Breadcrumb */}
+                <div className="text-gray-600 text-sm mt-8 mb-5">
+                    <T k="breadcrumb_home" /> / <T k="breadcrumb_products" /> / {product?.category}
                 </div>
 
-                {/* Product Details */}
-                {product && (<ProductDetails product={product} />)}
-
-                {/* Description & Reviews */}
-                {product && (<ProductDescription product={product} />)}
+                {product && <ProductDetails product={product} />}
+                {product && <ProductDescription product={product} />}
             </div>
         </div>
     );
