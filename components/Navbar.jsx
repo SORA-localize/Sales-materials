@@ -2,7 +2,8 @@
 import { Search, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useSelector } from "react-redux";
 import { useLanguage, useT, correctionCount } from "@/lib/LanguageContext";
 import T from "@/components/T";
@@ -21,6 +22,14 @@ const Navbar = () => {
 
     const [search, setSearch] = useState('')
     const cartCount = useSelector(state => state.cart.total)
+
+    const aiButtonRef = useRef(null)
+    const [aiTooltipStyle, setAiTooltipStyle] = useState(null)
+    const showAiTooltip = () => {
+        if (!aiButtonRef.current) return
+        const rect = aiButtonRef.current.getBoundingClientRect()
+        setAiTooltipStyle({ left: rect.left + rect.width / 2, top: rect.bottom + 8 })
+    }
 
     const handleSearch = (e) => {
         e.preventDefault()
@@ -45,7 +54,10 @@ const Navbar = () => {
                             {MODES.map(({ id, label }) => (
                                 <button
                                     key={id}
+                                    ref={id === 'ai' ? aiButtonRef : undefined}
                                     onClick={() => setMode(id)}
+                                    onMouseEnter={id === 'ai' ? showAiTooltip : undefined}
+                                    onMouseLeave={id === 'ai' ? () => setAiTooltipStyle(null) : undefined}
                                     className={`relative px-3 py-1 text-xs font-medium rounded-full transition-all ${
                                         mode === id
                                             ? 'bg-white text-slate-800 shadow-sm'
@@ -61,6 +73,16 @@ const Navbar = () => {
                                 </button>
                             ))}
                         </div>
+                        {aiTooltipStyle && createPortal(
+                            <span
+                                className="fixed z-[9999] bg-slate-800 text-white text-xs rounded-lg px-3 py-2 shadow-xl pointer-events-none leading-relaxed whitespace-nowrap"
+                                style={{ left: aiTooltipStyle.left, top: aiTooltipStyle.top, transform: 'translateX(-50%)' }}
+                            >
+                                Translated by Claude Sonnet 4.6
+                                <span className="absolute bottom-full left-1/2 -translate-x-1/2 border-4 border-transparent border-b-slate-800" />
+                            </span>,
+                            document.body
+                        )}
                     </div>
 
                     {/* Desktop Menu */}
